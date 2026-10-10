@@ -3,6 +3,7 @@
 
 
 - ▶ **Try it:** https://yoshi20071101.github.io/oops-busters/
+- 🎬 **Demo video:** https://yoshi20071101.github.io/oops-busters/demo.mp4
 
 ## About
 
