@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; base-uri 'none'; form-action 'none'">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oops Busters</title>
+<style>
+:root{--ink:#2a1b6b;--pu:#3b2a8f;--pu2:#6c5ce7;--bg:#fff7d6;--yel:#ffd23f;--red:#e8344e;--grn:#7be495}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,"Hiragino Sans","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;padding-bottom:90px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:4px solid #ff6b9d;outline-offset:2px}
+header{background:linear-gradient(#a29bfe,#6c5ce7);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:10;box-shadow:0 3px 0 var(--pu)}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.lg{font-size:30px}
+h1{margin:0;font-size:22px;font-weight:900;line-height:1.1;text-shadow:2px 2px 0 #2d1b69}
+.tag{margin:2px 0 0;font-size:11px;font-weight:700;opacity:.95}
+.lang{background:#fff;color:var(--pu);border:3px solid var(--pu);border-radius:999px;padding:5px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+.lang b{opacity:.4}.lang b.on{opacity:1;background:var(--yel);border-radius:8px;padding:0 5px}
+main{max-width:720px;margin:0 auto;padding:14px}
+.boss{background:linear-gradient(#ffe066,#ff9f43);border:3px solid var(--pu);border-radius:22px;padding:16px;text-align:center;color:#3b1f00;box-shadow:0 5px 0 var(--pu)}
+.boss h2{margin:0;font-size:20px;font-weight:900}
+.be{font-size:84px;line-height:1.1;margin:6px 0;display:inline-block;animation:bob 1.6s ease-in-out infinite}
+.boss.clear .be{animation:none;transform:scale(1.1)}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+.hpt{font-size:13px;font-weight:800}
+.bar{height:24px;background:#fff;border:3px solid #3b1f00;border-radius:14px;overflow:hidden;margin:6px 6px 10px}
+.bar i{display:block;height:100%;background:var(--red);transition:width .5s}
+.members{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chip{background:#fff;border:3px solid #3b1f00;border-radius:14px;padding:6px 10px;font-size:14px;font-weight:700;color:#3b1f00}
+.chip.d{background:var(--grn)}
+.chip.sel{outline:4px solid var(--pu);outline-offset:1px;transform:translateY(-2px)}
+.hint{margin:10px 0 0;font-size:13px}
+.clearmsg{background:#fff;border:3px solid var(--pu);border-radius:14px;padding:8px;margin:6px 0 10px;font-weight:900;color:var(--pu)}
+.tabs{display:flex;gap:8px;margin:16px 0 12px}
+.tab{flex:1;background:#fff;border:3px solid var(--pu);border-radius:14px;padding:9px 4px;font-weight:800;color:var(--pu)}
+.tab[aria-selected=true]{background:var(--pu);color:#fff}
+.panel[hidden]{display:none}
+h3{margin:4px 0 10px;font-size:18px;text-align:center;color:var(--pu)}
+.list{display:flex;flex-direction:column;gap:12px}
+.mon{position:relative;display:flex;align-items:center;gap:12px;background:var(--c);border:3px solid var(--pu);border-radius:16px;padding:12px;box-shadow:0 4px 0 var(--pu);transition:opacity .3s}
+.mon.done{opacity:.6;box-shadow:none;transform:translateY(3px)}
+.me{font-size:42px;width:54px;text-align:center}
+.mi{flex:1;min-width:0}.mi b{display:block;font-size:17px}.mi small{font-size:12px;font-weight:600}
+.beat{background:var(--pu);color:#fff;border:0;border-radius:12px;padding:10px 14px;font-weight:800;font-size:14px;box-shadow:0 3px 0 #1d1259}
+.beat:active{transform:translateY(2px);box-shadow:none}
+.beat.u{background:#fff;color:var(--pu);border:2px solid var(--pu);box-shadow:none}
+.x{position:absolute;top:-9px;right:-6px;width:26px;height:26px;border-radius:50%;border:2px solid var(--pu);background:#fff;font-size:12px;line-height:1;padding:0;color:var(--pu)}
+.card{background:#fff;border:3px solid var(--pu);border-radius:18px;padding:14px;margin-top:16px}
+.card h4{margin:0 0 8px;font-size:15px}
+.pre{display:flex;flex-wrap:wrap;gap:8px}
+.pre button{background:var(--bg);border:2px solid var(--pu);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+form{display:flex;gap:8px;margin-top:10px}
+input{flex:1;min-width:0;font:inherit;padding:10px 12px;border:3px solid var(--pu);border-radius:12px;background:#fff;color:var(--ink)}
+.go{background:var(--pink,#ff6b9d);border:3px solid var(--pu);border-radius:12px;padding:8px 14px;font-weight:800;color:var(--ink)}
+.foot{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center;justify-content:center}
+.next{background:var(--grn);border:3px solid var(--pu);border-radius:14px;padding:12px 20px;font-weight:900;font-size:16px;box-shadow:0 4px 0 var(--pu)}
+.next:disabled{background:#ddd;color:#777;border-color:#999;box-shadow:none;cursor:not-allowed}
+.link{background:none;border:0;text-decoration:underline;font-size:13px;color:var(--pu);font-weight:700}
+.note{width:100%;text-align:center;font-size:12px;margin:0}
+.dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.dc{background:var(--c);border:3px solid var(--pu);border-radius:16px;padding:12px;text-align:center}
+.dc.lock{background:#e3e0f5;color:#6b64a0}
+.dc .e{font-size:46px}.dc b{display:block}.dc small{display:block;font-size:12px}
+.dc .n{display:inline-block;margin-top:6px;background:var(--pu);color:#fff;border-radius:10px;padding:2px 8px;font-size:12px;font-weight:800}
+.sub{text-align:center;font-size:13px;margin:-4px 0 12px}
+.home{text-align:center;background:linear-gradient(#cfe9ff,#fff);border:3px solid var(--pu);border-radius:22px;padding:18px}
+.house{font-size:100px;line-height:1.1;animation:bob 2.4s ease-in-out infinite}
+.hn{font-size:22px;font-weight:900;margin:4px 0}
+.home .bar{border-color:var(--pu);margin:10px 10px}
+.home .bar i{background:var(--pu2)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,30px);background:var(--pu);color:#fff;font-weight:800;padding:12px 18px;border-radius:999px;border:3px solid #fff;box-shadow:0 4px 12px #0004;opacity:0;pointer-events:none;transition:.25s;max-width:92vw;text-align:center;z-index:60;font-size:14px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.fx{position:fixed;width:0;height:0;pointer-events:none;z-index:50}
+.fx span{position:absolute;font-size:26px;left:-13px;top:-13px;animation:pop .85s ease-out forwards}
+@keyframes pop{from{transform:translate(0,0) scale(.3);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.4) rotate(120deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(min-width:600px){h1{font-size:26px}.be{font-size:100px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span class="lg" aria-hidden="true">😱👾</span><div><h1>Oops Busters</h1><p class="tag" data-i18n="tagline"></p></div></div>
+  <button class="lang" id="langBtn" data-demo="lang-switch" data-i18n-aria="langAria"><b id="lj">日本語</b> / <b id="le">EN</b></button>
+</header>
+<main>
+  <section class="boss" id="boss" data-demo="boss-area"></section>
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="today" data-demo="tab-today" data-i18n="tabToday"></button>
+    <button class="tab" role="tab" data-tab="dex" data-demo="tab-dex" data-i18n="tabDex"></button>
+    <button class="tab" role="tab" data-tab="home" data-demo="tab-home" data-i18n="tabHome"></button>
+  </nav>
+  <section class="panel" id="p-today" data-demo="today-panel">
+    <h3 id="todayHead"></h3>
+    <div class="list" id="list" data-demo="monster-list"></div>
+    <div class="card">
+      <h4 data-i18n="addHead"></h4>
+      <div class="pre" id="presets"></div>
+      <form id="addForm">
+        <input id="custom" maxlength="14" data-demo="custom-input" data-i18n-ph="addPh" data-i18n-aria="addPh" autocomplete="off">
+        <button class="go" type="submit" data-demo="custom-add" data-i18n="addBtn"></button>
+      </form>
+    </div>
+    <div class="foot">
+      <button class="next" id="nextBtn" data-demo="next-day" disabled></button>
+      <p class="note" id="nextNote"></p>
+      <button class="link" id="resetBtn" data-demo="reset-day" data-i18n="resetDay"></button>
+    </div>
+  </section>
+  <section class="panel" id="p-dex" data-demo="dex-panel" hidden>
+    <h3 data-i18n="dexHead"></h3>
+    <p class="sub" id="dexSub"></p>
+    <div class="dex" id="dexGrid"></div>
+  </section>
+  <section class="panel" id="p-home" data-demo="home-panel" hidden>
+    <div class="home" id="home"></div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" data-demo="toast"></div>
+
+<script>
+const I18N={
+ja:{
+title:'Oops Busters｜朝のモンスターをたおせ！',
+tagline:'「あっ忘れた！」をみんなでやっつけろ',
+langAria:'言語を切り替え（日本語 / English）',
+tabToday:'👾 今日',tabDex:'📖 図鑑',tabHome:'🏠 わが家',
+bossTitle:'朝のモンスターをたおせ！',
+hpLeft:'モンスターのHP のこり {p}%（あと{n}体）',
+hint:'みんなのチェックで HP がへるよ！',
+clearTitle:'🎉 忘れ物ゼロ！みんなの勝ち！',
+clearSub:'今朝のモンスターを全員でたおした！',
+memOk:'OK ✅',
+todayHead:'{name}の今朝のモンスター {n}体',
+itemLabel:'持ち物：{i}',beat:'たおす！',undo:'もどす',
+undoAria:'{m}をふっかつさせる',beatAria:'{m}をたおす',removeAria:'{m}を消す',
+addHead:'モンスターをふやす',addPh:'持ち物の名前（例：マスク）',addBtn:'よびだす',
+empty:'モンスターがいないよ。下から呼び出そう！',
+nextDay:'あしたへ ▶',nextLocked:'全員たおすと あしたへ進めるよ',nextReady:'ぜんぶたおした！あしたも続けよう',
+resetDay:'今日をやりなおす',
+tDefeat:'{m}をたおした！💥',tCombo:'🔥 {n}コンボ！ {m}をたおした！',tUndo:'{m}がふっかつした…',
+tAdd:'{m}があらわれた！',tNext:'{n}日れんぞく！あしたも忘れ物ゼロをめざそう🔥',
+tLevel:'わが家が「{h}」に育った！🎉',tReset:'モンスターがもどってきた！',tDup:'もう呼び出してあるよ',
+dexHead:'モンスター図鑑',dexSub:'{a}/{b}種 発見・たおした合計 {t}体',
+dexLock:'？？？',dexLockD:'まだ出会っていないよ',dexCnt:'たおした {n}体',
+streak:'忘れ物ゼロ {n}日れんぞく',
+goal:'チーム目標：あと{n}日で「{h}」に成長！',goalMax:'最高レベル！わが家は大にぎわい🎉',
+homeSub:'みんなで忘れ物ゼロを続けると、家が育つよ',
+h0:'テント',h1:'小さなおうち',h2:'にぎやかな家',h3:'ごきんじょ広場',h4:'おしろ',h5:'にじのおしろ',
+m_me:'ぼく',m_mom:'ママ',m_sis:'いもうと',m_dad:'パパ',
+mon:{
+key:['カギカギン','鍵','「鍵」を忘れさせるぞ！'],hanky:['ハンカチーフ','ハンカチ','「ハンカチ」をかくすぞ！'],
+phone:['スマホーン','スマホ','「スマホ」を置き去りに！'],wallet:['サイフーン','財布','「財布」をすっとばす！'],
+bottle:['スイトーゲロ','水筒','「水筒」をカラにする！'],homework:['シュクダイオーニ','宿題','「宿題」を消し去る！'],
+hat:['ボウシザウルス','帽子','「帽子」をふっとばす！'],pass:['パスパスパイダー','定期券','「定期券」をからめとる！'],
+lunch:['ベントウザメ','お弁当','「お弁当」をパクリ！']},
+customName:'{i}モン'
+},
+en:{
+title:'Oops Busters | Beat the Morning Monsters!',
+tagline:'Beat "Oops, I forgot!" together',
+langAria:'Switch language (日本語 / English)',
+tabToday:'👾 Today',tabDex:'📖 Dex',tabHome:'🏠 Home',
+bossTitle:'Beat the morning monsters!',
+hpLeft:'Monster HP left: {p}% ({n} to go)',
+hint:"Everyone's checks bring the HP down!",
+clearTitle:'🎉 Zero forgotten! Team wins!',
+clearSub:'The whole family beat this morning’s monsters!',
+memOk:'OK ✅',
+todayHead:"{name}'s morning monsters: {n}",
+itemLabel:'Item: {i}',beat:'Beat it!',undo:'Undo',
+undoAria:'Bring back {m}',beatAria:'Beat {m}',removeAria:'Remove {m}',
+addHead:'Add a monster',addPh:'Item name (e.g. Mask)',addBtn:'Summon',
+empty:'No monsters here. Summon one below!',
+nextDay:'Next day ▶',nextLocked:'Beat every monster to go to tomorrow',nextReady:'All beaten! Keep it going tomorrow',
+resetDay:'Start today over',
+tDefeat:'Beat {m}! 💥',tCombo:'🔥 {n} combo! Beat {m}!',tUndo:'{m} is back…',
+tAdd:'{m} appeared!',tNext:'{n}-day streak! Aim for zero forgotten again 🔥',
+tLevel:'Your home grew into "{h}"! 🎉',tReset:'The monsters are back!',tDup:'Already summoned',
+dexHead:'Monster Dex',dexSub:'{a}/{b} found · {t} beaten in total',
+dexLock:'???',dexLockD:"You haven't met it yet",dexCnt:'Beaten: {n}',
+streak:'{n}-day zero-forgotten streak',
+goal:'Team goal: {n} more days to grow into "{h}"!',goalMax:'Max level! Your home is buzzing 🎉',
+homeSub:'Keep forgetting nothing together and your home grows',
+h0:'Tent',h1:'Little House',h2:'Lively House',h3:'Neighborhood Plaza',h4:'Castle',h5:'Rainbow Castle',
+m_me:'Me',m_mom:'Mom',m_sis:'Sis',m_dad:'Dad',
+mon:{
+key:['Keykin','Key','Makes you forget your key!'],hanky:['Hankychief','Handkerchief','Hides your handkerchief!'],
+phone:['Phonepus','Phone','Leaves your phone behind!'],wallet:['Walletbat','Wallet','Snatches your wallet away!'],
+bottle:['Gulpfrog','Water bottle','Empties your water bottle!'],homework:['Homework Ogre','Homework','Wipes out your homework!'],
+hat:['Hatosaurus','Hat','Blows your hat away!'],pass:['Passpider','Train pass','Webs up your train pass!'],
+lunch:['Bento Shark','Lunch box','Gobbles your lunch box!']},
+customName:'{i} Mon'
+}};
+const CAT={key:['👾','#ffd23f'],hanky:['👻','#ff6b9d'],phone:['🐙','#4ecdc4'],wallet:['🦇','#ff9f43'],bottle:['🐸','#7be495'],homework:['👹','#a29bfe'],hat:['🦖','#74b9ff'],pass:['🕷️','#fd79a8'],lunch:['🦈','#ffeaa7']};
+const CEMO=['🧟','👽','🤖','🐲','🦑','🦠'],CCOL=['#ffd23f','#4ecdc4','#ff6b9d','#7be495','#a29bfe','#ff9f43'];
+const TH=[0,1,3,6,10,15],HE=['⛺','🏠','🏡','🏘️','🏰','🌈'];
+const SKEY='oopsbusters_v1';
+let LANG='en',S,tab='today',combo=0,lastT=0,uid=100,toastT;
+
+function t(k,v){let s=(I18N[LANG][k]!==undefined?I18N[LANG][k]:k);if(typeof s!=='string')return s;if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+
+function defaults(){
+  const mk=(id,e,n,items)=>({id,e,n,items:items.map(([k,d])=>({id:uid++,key:k,done:!!d}))});
+  return {sel:'me',streak:2,dex:{key:12,hanky:9,phone:7,wallet:5,bottle:3,homework:2,hat:1,pass:0,lunch:0},
+    members:[
+      mk('me','👦','m_me',[['key',1],['hanky',0],['phone',0],['homework',0]]),
+      mk('mom','👩','m_mom',[['key',1],['wallet',1],['phone',1]]),
+      mk('sis','👧','m_sis',[['hanky',0],['bottle',0],['hat',0]]),
+      mk('dad','👨','m_dad',[['key',0],['wallet',1],['pass',0]])]};
+}
+function load(){try{const j=JSON.parse(localStorage.getItem(SKEY));if(j&&Array.isArray(j.members)&&j.members.length){j.members.forEach(m=>m.items.forEach(i=>{if(i.id>=uid)uid=i.id+1}));return j}}catch(e){}return null}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(S))}catch(e){}}
+
+function info(it){
+  if(it.key){const m=I18N[LANG].mon[it.key];return{e:CAT[it.key][0],c:CAT[it.key][1],n:m[0],i:m[1],d:m[2]}}
+  return{e:it.e,c:it.c,n:t('customName',{i:it.label}),i:it.label}
+}
+const cur=()=>S.members.find(m=>m.id===S.sel)||S.members[0];
+const allItems=()=>S.members.flatMap(m=>m.items);
+function level(){let i=0;TH.forEach((x,k)=>{if(S.streak>=x)i=k});return i}
+
+function toast(msg){const e=$('toast');e.textContent=msg;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),2300)}
+function boom(el,n,set){
+  if(!el)return;const r=el.getBoundingClientRect(),b=document.createElement('div');
+  b.className='fx';b.style.left=(r.left+r.width/2)+'px';b.style.top=(r.top+r.height/2)+'px';
+  set=set||['💥','✨','⭐','🔥'];n=n||9;
+  for(let i=0;i<n;i++){const a=Math.PI*2*i/n+Math.random()*.5,d=50+Math.random()*50,s=document.createElement('span');
+    s.textContent=set[i%set.length];s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d+'px');b.appendChild(s)}
+  document.body.appendChild(b);setTimeout(()=>b.remove(),950);
+}
+
+function applyStatic(){
+  document.documentElement.lang=LANG;document.title=t('title');
+  document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
+  document.querySelectorAll('[data-i18n-aria]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.i18nAria)));
+  $('lj').className=LANG==='ja'?'on':'';$('le').className=LANG==='en'?'on':'';
+}
+function renderBoss(){
+  const all=allItems(),tot=all.length,left=all.filter(i=>!i.done).length,p=tot?Math.round(left/tot*100):0,clear=tot>0&&left===0;
+  const em=clear?'🎉':(p<=40?'😵':'👾');
+  let h=`<h2>${t('bossTitle')}</h2><div class="be" aria-hidden="true" id="bossEmoji">${em}</div>`;
+  if(clear)h+=`<div class="clearmsg" data-demo="clear-message">${t('clearTitle')}<br><small>${t('clearSub')}</small></div>`;
+  else h+=`<div class="hpt">${t('hpLeft',{p:p,n:left})}</div>`;
+  h+=`<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}"><i style="width:${p}%"></i></div><div class="members">`;
+  S.members.forEach(m=>{
+    const d=m.items.filter(i=>i.done).length,ok=m.items.length>0&&d===m.items.length;
+    h+=`<button class="chip ${ok?'d':''} ${m.id===S.sel?'sel':''}" data-act="sel" data-id="${m.id}" data-demo="member-${m.id}" aria-pressed="${m.id===S.sel}">${m.e} ${esc(t(m.n))} ${ok?t('memOk'):d+'/'+m.items.length}</button>`;
+  });
+  h+=`</div><p class="hint">${t('hint')}</p>`;
+  const b=$('boss');b.className='boss'+(clear?' clear':'');b.innerHTML=h;
+}
+function renderTabs(){
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
+  ['today','dex','home'].forEach(x=>$('p-'+x).hidden=x!==tab);
+}
+function renderToday(){
+  const m=cur();
+  $('todayHead').textContent=t('todayHead',{name:t(m.n),n:m.items.length});
+  $('list').innerHTML=m.items.length?m.items.map(it=>{
+    const d=info(it),k='defeat-'+m.id+'-'+(it.key||'c'+it.id);
+    return `<article class="mon ${it.done?'done':''}" style="--c:${d.c}" id="mon${it.id}">
+      <div class="me" aria-hidden="true">${it.done?'💥':d.e}</div>
+      <div class="mi"><b>${esc(d.n)}</b><small>${esc(t('itemLabel',{i:d.i}))}</small></div>
+      ${it.done?`<button class="beat u" data-act="toggle" data-id="${it.id}" data-demo="undo-${m.id}-${it.key||'c'+it.id}" aria-label="${esc(t('undoAria',{m:d.n}))}">✅ ${t('undo')}</button>`
+      :`<button class="beat" data-act="toggle" data-id="${it.id}" data-demo="${k}" aria-label="${esc(t('beatAria',{m:d.n}))}">${t('beat')}</button>`}
+      <button class="x" data-act="remove" data-id="${it.id}" data-demo="remove-${it.key||'c'+it.id}" aria-label="${esc(t('removeAria',{m:d.n}))}">✕</button>
+    </article>`}).join(''):`<p class="sub">${t('empty')}</p>`;
+  const have=m.items.map(i=>i.key);
+  $('presets').innerHTML=Object.keys(CAT).filter(k=>!have.includes(k)).map(k=>`<button data-act="preset" data-key="${k}" data-demo="preset-${k}" type="button">${CAT[k][0]} ${esc(I18N[LANG].mon[k][1])}</button>`).join('');
+  const all=allItems(),clear=all.length>0&&all.every(i=>i.done);
+  $('nextBtn').disabled=!clear;$('nextBtn').textContent=t('nextDay');
+  $('nextNote').textContent=clear?t('nextReady'):t('nextLocked');
+}
+function renderDex(){
+  const keys=Object.keys(CAT),found=keys.filter(k=>S.dex[k]>0).length,tot=keys.reduce((a,k)=>a+(S.dex[k]||0),0);
+  $('dexSub').textContent=t('dexSub',{a:found,b:keys.length,t:tot});
+  $('dexGrid').innerHTML=keys.map(k=>{
+    const n=S.dex[k]||0,m=I18N[LANG].mon[k];
+    return n>0?`<div class="dc" style="--c:${CAT[k][1]}" data-demo="dex-${k}"><div class="e">${CAT[k][0]}</div><b>${m[0]}</b><small>${m[2]}</small><span class="n">${t('dexCnt',{n:n})}</span></div>`
+    :`<div class="dc lock" data-demo="dex-${k}"><div class="e">❓</div><b>${t('dexLock')}</b><small>${t('dexLockD')}</small></div>`}).join('');
+}
+function renderHome(){
+  const l=level(),nx=TH[l+1],hn=t('h'+l);
+  let pct=100,goal=t('goalMax');
+  if(nx!==undefined){pct=Math.round((S.streak-TH[l])/(nx-TH[l])*100);goal=t('goal',{n:nx-S.streak,h:t('h'+(l+1))})}
+  $('home').innerHTML=`<div class="house" aria-hidden="true">${HE[l]}</div><div class="hn">${hn}</div><div style="font-weight:800">🔥 ${t('streak',{n:S.streak})}</div>
+  <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}" data-demo="team-goal"><i style="width:${pct}%"></i></div>
+  <div style="font-size:14px;font-weight:700">${goal}</div><p class="sub" style="margin-top:10px">${t('homeSub')}</p>`;
+}
+function renderAll(){applyStatic();renderBoss();renderTabs();renderToday();renderDex();renderHome()}
+
+function setLang(l){LANG=l;try{localStorage.setItem('lang',l)}catch(e){}renderAll()}
+function initLang(){
+  let l=null;
+  if(window.APP_LANG==='ja'||window.APP_LANG==='en')l=window.APP_LANG;
+  if(!l){try{const q=new URLSearchParams(location.search).get('lang');if(q==='ja'||q==='en')l=q}catch(e){}}
+  if(!l){try{const s=localStorage.getItem('lang');if(s==='ja'||s==='en')l=s}catch(e){}}
+  LANG=l||'en';
+}
+
+function toggle(id){
+  const m=cur(),it=m.items.find(i=>i.id==id);if(!it)return;
+  const d=info(it),wasClear=allItems().every(i=>i.done);
+  it.done=!it.done;
+  if(it.key)S.dex[it.key]=Math.max(0,(S.dex[it.key]||0)+(it.done?1:-1));
+  save();
+  if(it.done){
+    const now=Date.now();combo=(now-lastT<6000)?combo+1:1;lastT=now;
+    toast(combo>=2?t('tCombo',{n:combo,m:d.n}):t('tDefeat',{m:d.n}));
+  }else{combo=0;toast(t('tUndo',{m:d.n}))}
+  renderAll();
+  if(it.done){
+    const el=document.querySelector('#mon'+it.id+' .me');boom(el,8+Math.min(combo,4)*2);
+    if(allItems().every(i=>i.done)&&!wasClear)setTimeout(()=>boom($('bossEmoji'),16,['🎉','✨','⭐','🎊']),350);
+  }
+}
+function addItem(item){
+  const m=cur();m.items.push(Object.assign({id:uid++,done:false},item));save();renderAll();
+  const d=info(m.items[m.items.length-1]);toast(t('tAdd',{m:d.n}));
+  const el=document.querySelector('#mon'+(uid-1)+' .me');boom(el,6,['✨','⭐']);
+}
+function nextDay(){
+  const before=level();S.streak++;
+  S.members.forEach(m=>m.items.forEach(i=>i.done=false));combo=0;save();renderAll();
+  toast(level()>before?t('tLevel',{h:t('h'+level())}):t('tNext',{n:S.streak}));
+  tab='home';renderTabs();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.addEventListener('click',e=>{
+  const tb=e.target.closest('.tab');if(tb){tab=tb.dataset.tab;renderTabs();return}
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act;
+  if(a==='sel'){S.sel=b.dataset.id;save();renderAll()}
+  else if(a==='toggle')toggle(b.dataset.id);
+  else if(a==='remove'){const m=cur();m.items=m.items.filter(i=>i.id!=b.dataset.id);save();renderAll()}
+  else if(a==='preset')addItem({key:b.dataset.key});
+});
+$('langBtn').addEventListener('click',()=>setLang(LANG==='ja'?'en':'ja'));
+$('nextBtn').addEventListener('click',nextDay);
+$('resetBtn').addEventListener('click',()=>{S.members.forEach(m=>m.items.forEach(i=>i.done=false));combo=0;save();renderAll();toast(t('tReset'))});
+$('addForm').addEventListener('submit',e=>{
+  e.preventDefault();const v=$('custom').value.trim();if(!v)return;
+  const m=cur();
+  if(m.items.some(i=>!i.key&&i.label===v)){toast(t('tDup'));return}
+  const r=Math.floor(Math.random()*CEMO.length);
+  addItem({key:null,label:v,e:CEMO[r],c:CCOL[r]});$('custom').value='';
+});
+
+initLang();
+S=load()||defaults();
+renderAll();
+</script>
+</body>
+</html>
